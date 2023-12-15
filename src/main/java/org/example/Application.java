@@ -10,6 +10,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.util.UUID;
+import java.util.List;
+import java.util.Scanner;
 
 
 
@@ -23,21 +25,103 @@ public class Application {
         LibroDao libroDao = new LibroDao(em);
         RivistaDao rivistaDao = new RivistaDao(em);
 
-        // agg di un libro
-        Libro nuovoLibro = new Libro(UUID.randomUUID(), "io", "romanzo", "Tree ", 2023, 200);
-        libroDao.aggiungiLibro(nuovoLibro);
+        Scanner scanner = new Scanner(System.in);
+        String scelta;
 
-        // rivsta aggiunta
-        Rivista nuovaRivista = new Rivista(UUID.randomUUID(), "RivistaBella", 2023, 50, Periodicità.MENSILE);
-        rivistaDao.aggiungiRivista(nuovaRivista);
+        do {
+            System.out.println("1. Aggiungi un libro");
+            System.out.println("2. Rimuovi un libro");
+            System.out.println("3. Aggiungi una rivista");
+            System.out.println("4. Rimuovi una rivista");
+            System.out.println("0. Esci");
 
-        // rimuovi libro E' FUNZINOANTE MA OGNI VOLTA BISOGNA CAMBIARE UUID
-        // libroDao.rimuoviLibro(UUID.fromString("aa677472-3c0a-4621-9a9d-8b885a148af1"));
+            System.out.print("Scelta: ");
+            scelta = scanner.nextLine();
 
-        // rimuovi rivista E' FUNZINOANTE MA OGNI VOLTA BISOGNA CAMBIARE UUID
-        // rivistaDao.rimuoviRivista(UUID.fromString("1a146ef3-8364-4e20-99c9-4bacb428bb38"));
+            switch (scelta) {
+                case "1":
+                    // Aggiungi un libro
+                    Libro nuovoLibro = chiediDettagliLibro(scanner);
+                    libroDao.aggiungiLibro(nuovoLibro);
+                    visualizzaTuttiLibri(libroDao);
+                    break;
 
+                case "2":
+                    // Rimuovi un libro
+                    System.out.print("Inserisci l'UUID del libro da rimuovere: ");
+                    String uuidLibro = scanner.nextLine();
+                    libroDao.rimuoviLibro(UUID.fromString(uuidLibro));
+                    visualizzaTuttiLibri(libroDao);
+                    break;
+                 //case "3":
+                    // Aggiungi una rivista
+                  //  Rivista nuovaRivista = chiediDettagliRivista();
+                   // rivistaDao.aggiungiRivista(nuovaRivista);
+                    // visualizzaTutteRiviste(rivistaDao);
+                   // break;
+                case "4":
+                    // Rimuovi una rivista
+                    System.out.print("Inserisci l'UUID della rivista da rimuovere: ");
+                    String uuidRivista = scanner.nextLine();
+                    rivistaDao.rimuoviRivista(UUID.fromString(uuidRivista));
+                   // visualizzaTutteRiviste(rivistaDao);
+                    break;
+                case "0":
+                    System.out.println("Uscita dal programma.");
+                    break;
+                default:
+                    System.out.println("Scelta non valida. Riprova.");
+            }
+
+        } while (!scelta.equals("0"));
+
+        scanner.close();
         em.close();
         emf.close();
     }
+
+
+    private static Libro chiediDettagliLibro(Scanner scanner) {
+        System.out.print("Inserisci l'autore del libro: ");
+        String autore = scanner.nextLine();
+
+        System.out.print("Inserisci il genere del libro: ");
+        String genere = scanner.nextLine();
+
+        System.out.print("Inserisci il nome del libro: ");
+        String nome = scanner.nextLine();
+
+        System.out.print("Inserisci l'anno di pubblicazione del libro: ");
+        int annoPubblicazione = Integer.parseInt(scanner.nextLine());
+
+        System.out.print("Inserisci il numero di pagine del libro: ");
+        int numeroPagine = Integer.parseInt(scanner.nextLine());
+
+
+        return new Libro(UUID.randomUUID(), autore, genere, nome, annoPubblicazione, numeroPagine);
+    }
+
+    private static Rivista chiediDettagliRivista(Scanner scanner) {
+        System.out.print("Inserisci il nome della rivista: ");
+        String nome = scanner.nextLine();
+
+        System.out.print("Inserisci l'anno di pubblicazione della rivista: ");
+        int annoPubblicazione = Integer.parseInt(scanner.nextLine());
+
+        System.out.print("Inserisci il numero di pagine della rivista: ");
+        int numeroPagine = Integer.parseInt(scanner.nextLine());
+
+        System.out.print("Inserisci la periodicità della rivista (MENSILE, BIMESTRALE, TRIMESTRALE, SEMESTRALE, ANNUALE): ");
+        Periodicità periodicità = Periodicità.valueOf(scanner.nextLine().toUpperCase());
+
+        return new Rivista(UUID.randomUUID(), nome, annoPubblicazione, numeroPagine, periodicità);
+    }
+
+
+    private static void visualizzaTuttiLibri(LibroDao libroDao) {
+        List<Libro> libri = libroDao.visualizzaTuttiLibriDalDatabase();
+        libri.forEach(System.out::println);
+    }
+
+
 }

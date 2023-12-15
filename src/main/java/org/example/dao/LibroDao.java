@@ -6,6 +6,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import java.util.List;
 import java.util.UUID;
+import javax.persistence.TypedQuery;
+
 
 
 public class LibroDao {
@@ -49,4 +51,11 @@ public class LibroDao {
     public List<Libro> cercaLibroPerAutore(String autore) {
         return null;
     }
-}
+
+
+        public List<Libro> visualizzaTuttiLibriDalDatabase() {
+            TypedQuery<Libro> query = em.createQuery("SELECT l FROM Libro l", Libro.class);
+            return query.getResultList();
+        }
+    }
+
