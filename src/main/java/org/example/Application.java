@@ -31,8 +31,11 @@ public class Application {
         Rivista nuovaRivista = new Rivista(UUID.randomUUID(), "RivistaBella", 2023, 50, Periodicità.MENSILE);
         rivistaDao.aggiungiRivista(nuovaRivista);
 
-        // rimuovi libro
-        libroDao.rimuoviLibro(UUID.fromString("aa677472-3c0a-4621-9a9d-8b885a148af1"));
+        // rimuovi libro E' FUNZINOANTE MA OGNI VOLTA BISOGNA CAMBIARE UUID
+        // libroDao.rimuoviLibro(UUID.fromString("aa677472-3c0a-4621-9a9d-8b885a148af1"));
+
+        // rimuovi rivista E' FUNZINOANTE MA OGNI VOLTA BISOGNA CAMBIARE UUID
+        // rivistaDao.rimuoviRivista(UUID.fromString("1a146ef3-8364-4e20-99c9-4bacb428bb38"));
 
         em.close();
         emf.close();
