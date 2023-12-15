@@ -50,7 +50,7 @@ public class Application {
                     // Rimuovi un libro
                     System.out.println("Scegli l'UUID del libro da rimuoveree , copialo e inserisclilo nella prossima domanda");
                     visualizzaTuttiLibri(libroDao);
-                    System.out.print("Inserisci l'UUID del libro da rimuovere: ");
+                    System.out.print("Inserisci l'UUID del libroo da rimuovere: ");
                     String uuidLibro = scanner.nextLine();
                     libroDao.rimuoviLibro(UUID.fromString(uuidLibro));
                     visualizzaTuttiLibri(libroDao);
