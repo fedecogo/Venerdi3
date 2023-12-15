@@ -6,9 +6,7 @@ import org.example.entities.Libro;
 import org.example.entities.Periodicità;
 import org.example.entities.Rivista;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import javax.persistence.*;
 import java.util.UUID;
 import java.util.List;
 import java.util.Scanner;
@@ -18,6 +16,8 @@ import java.util.Scanner;
 public class Application {
 
     public static void main(String[] args) {
+
+
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("biblio");
         EntityManager em = emf.createEntityManager();
 
@@ -48,23 +48,27 @@ public class Application {
 
                 case "2":
                     // Rimuovi un libro
+                    System.out.println("Scegli l'UUID del libro da rimuoveree , copialo e inserisclilo nella prossima domanda");
+                    visualizzaTuttiLibri(libroDao);
                     System.out.print("Inserisci l'UUID del libro da rimuovere: ");
                     String uuidLibro = scanner.nextLine();
                     libroDao.rimuoviLibro(UUID.fromString(uuidLibro));
                     visualizzaTuttiLibri(libroDao);
                     break;
-                 //case "3":
+                 case "3":
                     // Aggiungi una rivista
-                  //  Rivista nuovaRivista = chiediDettagliRivista();
-                   // rivistaDao.aggiungiRivista(nuovaRivista);
-                    // visualizzaTutteRiviste(rivistaDao);
-                   // break;
+                    Rivista nuovaRivista = chiediDettagliRivista(scanner);
+                    rivistaDao.aggiungiRivista(nuovaRivista);
+                    visualizzaTutteRiviste(rivistaDao);
+                    break;
                 case "4":
                     // Rimuovi una rivista
-                    System.out.print("Inserisci l'UUID della rivista da rimuovere: ");
+                    System.out.print("Inserisci l'UUID della rivista da rimuovere copialo e inserisclilo nella prossima domanda ");
+                    visualizzaTutteRiviste(rivistaDao);
+                    System.out.print("Inserisci l'UUID deelle riviste da rimuovere: ");
                     String uuidRivista = scanner.nextLine();
                     rivistaDao.rimuoviRivista(UUID.fromString(uuidRivista));
-                   // visualizzaTutteRiviste(rivistaDao);
+                    visualizzaTutteRiviste(rivistaDao);
                     break;
                 case "0":
                     System.out.println("Uscita dal programma.");
@@ -121,6 +125,13 @@ public class Application {
     private static void visualizzaTuttiLibri(LibroDao libroDao) {
         List<Libro> libri = libroDao.visualizzaTuttiLibriDalDatabase();
         libri.forEach(System.out::println);
+        System.out.println("libro tolto");
+    }
+
+    private static void  visualizzaTutteRiviste(RivistaDao rivistaDao) {
+        List<Rivista> rivisti = rivistaDao.visualizzaTutteRivisteDalDatabase();
+        rivisti.forEach(System.out::println);
+        System.out.println("rivsta tolta");
     }
 
 

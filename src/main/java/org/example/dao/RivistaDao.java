@@ -4,6 +4,7 @@ import org.example.entities.Rivista;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.UUID;
 
@@ -54,4 +55,10 @@ public class RivistaDao {
                 .setParameter("anno", anno)
                 .getResultList();
     }
+
+    public List<Rivista> visualizzaTutteRivisteDalDatabase(){
+        TypedQuery<Rivista> query = em.createQuery("SELECT r FROM Rivista r", Rivista.class);
+        return query.getResultList();
+    }
+
 }
